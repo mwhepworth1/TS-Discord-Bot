@@ -61,7 +61,9 @@ async function startCanvasAPITask() {
                 const coursesResponse = await axios.get(`${api}courses`, {
                     params: {
                         access_token: token,
-                        include: 'total_scores'
+                        include: 'total_scores',
+                        per_page: 100,
+                        enrollment_term_id: 411
                     }
                 });
 
@@ -111,6 +113,7 @@ async function startCanvasAPITask() {
                         })
                         .join('\n');
 
+                    // Update database
                     await query(
                         `INSERT INTO api (course_name, course_code, course_score, course_letter_grade, upcoming_assignments, past_assignments, discord_id)
                          SELECT ?, ?, ?, ?, ?, ?, ?
@@ -148,7 +151,7 @@ async function startCanvasAPITask() {
         } catch (error) {
             console.error('Error in Canvas API task:', error);
         }
-    }, 120000); // Run every 2 minutes
+    }, 1000 * 60 * 10); // Run every 10 mins
 }
 
 client.on('ready', () => {
