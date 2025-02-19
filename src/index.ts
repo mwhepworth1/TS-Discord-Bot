@@ -1,42 +1,12 @@
 import { Client, Collection, EmbedBuilder, GatewayIntentBits, Partials } from 'discord.js';
 import config from './data/settings.json';
 import { loadSettings } from './data/db/mysql';
-import chokidar from 'chokidar';
-import { Settings } from './data/user-settings'; 
+import { EmbedMessages } from './data/messages';
+import { Command, Addon } from './types/interfaces';
+import * as fs from 'fs';
+import * as path from 'path';
 
-interface Addon {
-    embedMessage: EmbedBuilder;
-}
-
-let embedMessage: EmbedBuilder | undefined;
-
-const watcher = chokidar.watch('./addons/messages.ts');
-
-const reRequireModule = (): void => {
-    try {
-        delete require.cache[require.resolve('./addons/messages.ts')];
-        const addon: Addon = require('./addons/messages.ts');
-        embedMessage = addon.embedMessage;
-        console.log('Imported new messages.ts');
-    } catch (e) {
-        console.error('Failed to import new messages.ts', e);
-    }
-}
-
-// Initialize
-reRequireModule();
-
-watcher.on('change', () => {
-    reRequireModule();
-});
-
-setTimeout(() => {
-    if (embedMessage) {
-        console.log('Successfully loaded messages');
-    } else {
-        console.error('Failed to load messages');
-    }
-}, 1000);
+let embedMessage: EmbedMessages | undefined; // Use "| undefined" to allow for the possibility of it being undefined
 
 const client = new Client({
     intents: [
@@ -60,26 +30,42 @@ client.on('ready', () => {
   }
 });
 
-client.on('messageCreate', async message => {
-    if (message.content.startsWith(config.prefix)) {
-        const args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/);
-        const command: string = args[0];
-        if (message.author.bot === true) return;
+const commands = new Collection<string, Command>();
 
-        loadSettings(message.author.id).then(async (settings: Settings[]) => {
-            const userSettings: Settings = settings[0];
-            let color: number = parseInt(userSettings.color, 16);
-            if (message.guildId != null) {
-                switch(command) {
-                    case 'help':
-                        message.channel.send({embeds: embedMessage?.guilds?.helpEmbed});
-                }
-            } else if (message.guildId === null) {
-                switch (command) {
-                    case 'help':
-                        let embed = embedMessage?.direct?.helpEmbed;
-                }
-            }
-        });
+// Load commands
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const { command } = require(path.join(commandsPath, file));
+    commands.set(command.name, command);
+}
+
+client.on('messageCreate', async message => {
+    console.log(`Message received: ${message.content}`);
+    if (!message.content.startsWith(config.prefix)) return;
+    console.log(`Message starts with prefix: ${config.prefix}`);
+    if (message.author.bot) return;
+    console.log(`Message author is not a bot`);
+
+    const args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/);
+    const commandName: string = args[0];
+
+    console.log(`Command name: ${commandName}`);
+
+    const command = commands.get(commandName);
+    if (!command) {
+        console.log(`Command not found: ${commandName}`);
+        return
+    };
+
+    try {
+        const settings = await loadSettings(message.author.id);
+        await command.execute(message, args, settings[0]);
+    } catch (error) {
+        console.error(error);
+        message.reply('There was an error executing that command!');
     }
 });
+
+client.login(config.token);

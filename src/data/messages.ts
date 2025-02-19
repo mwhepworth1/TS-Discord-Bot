@@ -9,7 +9,45 @@ async function updateSettings(c: string, g: string, l: string, r: string) {
     userSettings.recentGrades = r
 }
 
-const embedMessage = {
+export interface CustomEmbed {
+  color: number;
+  title: string;
+  description: string;
+  thumbnail?: {
+    url: string;
+  };
+  fields?: {
+    name: string;
+    value: string;
+    inline?: boolean;
+  }[];
+  timestamp: string;
+  footer: {
+    text: string;
+    iconURL: string;
+  };
+}
+
+export interface EmbedMessages {
+    guilds: {
+        helpEmbed: CustomEmbed;
+    };
+    direct: {
+        helpEmbed: CustomEmbed;
+    };
+    settings: {
+        [key: string]: CustomEmbed;
+    };
+    school: {
+        [key: string]: CustomEmbed;
+    };
+    assignmentNotifier: CustomEmbed;
+    dnd: {
+        dndToggle: CustomEmbed;
+    };
+}
+
+const embedMessage: EmbedMessages = {
     guilds: {
         helpEmbed: {
             color: userSettings.embedColor,
