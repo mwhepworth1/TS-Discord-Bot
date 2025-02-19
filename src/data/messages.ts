@@ -1,4 +1,4 @@
-const config = require("../settings.json");
+const config = require("./settings.json");
 let {userSettings} = require("./user-settings.js");
 
 async function updateSettings(c: string, g: string, l: string, r: string) {

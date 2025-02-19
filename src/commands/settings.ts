@@ -1,11 +1,8 @@
 import { Message, DMChannel } from 'discord.js';
 import { Command } from '../types/interfaces';
 import { Settings } from '../data/user-settings';
-import { EmbedMessages } from '../data/messages';
+import { EmbedMessages, embedMessage } from '../data/messages';
 import { addKey, setColor, linkVisibility, gradeVisibility, setHistory } from '../data/db/mysql';
-
-declare const embedMessage: EmbedMessages;
-
 
 export const command: Command = {
     name: 'settings',

@@ -2,8 +2,13 @@ import mysql from 'mysql';
 import { userSettings } from '../user-settings';
 import util from 'util';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config({ path: '../../.env' });
+dotenv.config();
+
+console.log(process.env.HOST);
+console.log(process.env.USER);
+
 
 const pool = mysql.createPool({
     connectionLimit: 20,
