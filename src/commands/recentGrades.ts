@@ -1,10 +1,9 @@
 import { DMChannel, Message } from 'discord.js';
 import { Command } from '../types/interfaces';
 import { Settings } from '../data/user-settings';
-import { EmbedMessages } from '../data/messages';
+import { EmbedMessages, embedMessage } from '../data/messages';
 import { showGradeHistory, addKey, setColor, linkVisibility, gradeVisibility, setHistory, pastAssignments } from '../data/db/mysql';
 
-declare const embedMessage: EmbedMessages;
 
 export const command: Command = {
     name: 'recentgrades',

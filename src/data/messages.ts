@@ -64,7 +64,7 @@ const embedMessage: EmbedMessages = {
             ],
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         }
@@ -133,7 +133,7 @@ const embedMessage: EmbedMessages = {
             ],
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -174,7 +174,7 @@ const embedMessage: EmbedMessages = {
             ],
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -187,7 +187,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -200,7 +200,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -213,7 +213,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -226,7 +226,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -239,7 +239,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -252,7 +252,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -265,7 +265,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -278,7 +278,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -291,7 +291,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -304,7 +304,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -317,7 +317,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -330,7 +330,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -343,7 +343,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -356,7 +356,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -369,7 +369,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -382,7 +382,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -397,7 +397,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -462,7 +462,7 @@ const embedMessage: EmbedMessages = {
             ],
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -528,7 +528,7 @@ const embedMessage: EmbedMessages = {
             ],
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -541,7 +541,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         },
@@ -607,7 +607,7 @@ const embedMessage: EmbedMessages = {
             ],
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
     },
@@ -621,7 +621,7 @@ const embedMessage: EmbedMessages = {
             },
             timestamp: new Date().toISOString(),
             footer: {
-                text: 'A BYU-Idaho Hackathon Project',
+                text: 'A CSE 310 Project | By Matthew Hepworth',
                 iconURL: config.logoURL,
             },
         }

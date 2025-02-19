@@ -2,7 +2,7 @@ import { Message, DMChannel } from 'discord.js';
 import { Command } from '../types/interfaces';
 import { Settings } from '../data/user-settings';
 import { EmbedMessages, embedMessage } from '../data/messages';
-import { addKey, setColor, linkVisibility, gradeVisibility, setHistory } from '../data/db/mysql';
+import { addKey, setColor, linkVisibility, gradeVisibility, setHistory, loadSettings } from '../data/db/mysql';
 
 export const command: Command = {
     name: 'settings',
@@ -127,19 +127,22 @@ export const command: Command = {
             }
         } else {
             const embed = embedMessage?.settings.mainEmbed;
-            if (embed) {
-                embed.color = color;
-                if (userSettings.apiKey === "NONE" || userSettings.apiKey === undefined) {
-                    embed.fields![0].value = `Please provide an API Key.`;
-                } else {
-                    embed.fields![0].value = `*This content is not displayed for security purposes.*`;
+            loadSettings(message.author.id).then(r => {
+                if (embed) {
+                    embed.color = color;
+                    if (r[0].apikey === "NONE" || r[0].apikey === undefined) {
+                        embed.fields![0].value = `Please provide an API Key.`;
+                    } else {
+                        embed.fields![0].value = `*This content is not displayed for security purposes.*`;
+                    }
+                    embed.fields![1].value = `\`${r[0].color}\``;
+                    embed.fields![2].value = `\`${r[0].showlinks}\``;
+                    embed.fields![3].value = `\`${r[0].showgrades}\``;
+                    embed.fields![4].value = `from the last \`${r[0].pastgrades}\` days.`;
+                    dm.send({ embeds: [embed] });
                 }
-                embed.fields![1].value = `\`${userSettings.color}\``;
-                embed.fields![2].value = `\`${userSettings.links}\``;
-                embed.fields![3].value = `\`${userSettings.grades}\``;
-                embed.fields![4].value = `from the last \`${userSettings.recentGrades}\` days.`;
-                dm.send({ embeds: [embed] });
-            }
+            });
+            
         }
     }
 };
