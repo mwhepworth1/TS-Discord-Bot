@@ -1,10 +1,16 @@
 {
   "dependencies": {
+    "@types/mysql": "^2.15.26",
     "@types/node": "^22.13.4",
     "@types/ws": "^8.5.14",
+    "chokidar": "^4.0.3",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
+    "mysql": "^2.18.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.11"
   }
 }
