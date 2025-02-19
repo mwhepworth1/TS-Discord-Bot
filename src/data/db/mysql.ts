@@ -19,7 +19,7 @@ const pool = mysql.createPool({
 });
 
 // Type the promisified function so that it returns a Promise<any>
-const query: (sql: string, values?: any[]) => Promise<any> = util.promisify(pool.query).bind(pool);
+export const query: (sql: string, values?: any[]) => Promise<any> = util.promisify(pool.query).bind(pool);
 
 export async function loadSettings(userID: string): Promise<any[]> {
     try {
@@ -159,7 +159,7 @@ export async function showGradeHistory(userID: string): Promise<any[]> {
 
 export async function pastAssignments(userID: string): Promise<any[]> {
     try {
-        const result = await query('SELECT course_name, course_code, past_assignments FROM api WHERE discord_id = ?', [userID]);
+        const result = await query('SELECT api.course_name, api.course_code, api.past_assignments, bot_settings.pastgrades FROM api INNER JOIN bot_settings ON api.discord_id = bot_settings.discord_id WHERE api.discord_id = ?', [userID]);
         console.log('SEARCHED BOT_SETTINGS DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;

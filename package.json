@@ -3,6 +3,7 @@
     "@types/mysql": "^2.15.26",
     "@types/node": "^22.13.4",
     "@types/ws": "^8.5.14",
+    "axios": "^1.7.9",
     "chokidar": "^4.0.3",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
