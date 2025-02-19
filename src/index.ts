@@ -1,8 +1,8 @@
 import { Client, Collection, EmbedBuilder, GatewayIntentBits, Partials } from 'discord.js';
-import config from 'settings.json';
-import { checkTableExists, createTable, loadSettings } from './addons/data/server';
+import config from './data/settings.json';
+import { loadSettings } from './data/db/mysql';
 import chokidar from 'chokidar';
-import { Settings } from './addons/user-settings';
+import { Settings } from './data/user-settings'; 
 
 interface Addon {
     embedMessage: EmbedBuilder;
@@ -53,32 +53,11 @@ const client = new Client({
 });
 
 client.on('ready', () => {
-
   if (client.user && client.user.tag) {
     console.log(`Logged in as ${client.user.tag}!`);
   } else {
     console.log(`Logged in, but client.user.tag (or client.user) is undefined.`);
   }
-
-  console.log(`Running Database Checks.`);
-
-  checkTableExists('bot_settings').then(exists => {
-    if (!exists) {
-      console.log('Table "bot_settings" does not exist.');
-      createTable('bot_settings').then(() => {
-        console.log('Created table: "bot_settings".');
-      });
-    }
-  });
-
-  checkTableExists('api').then(exists => {
-    if (!exists) {
-      console.log('Table "api" does not exist.');
-      createTable('api').then(() => {
-        console.log('Created table: "api".');
-      });
-    }
-  });
 });
 
 client.on('messageCreate', async message => {
@@ -86,6 +65,7 @@ client.on('messageCreate', async message => {
         const args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/);
         const command: string = args[0];
         if (message.author.bot === true) return;
+
         loadSettings(message.author.id).then(async (settings: Settings[]) => {
             const userSettings: Settings = settings[0];
             let color: number = parseInt(userSettings.color, 16);

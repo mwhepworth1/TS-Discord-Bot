@@ -1,6 +1,5 @@
 import mysql from 'mysql';
 import { userSettings } from '../user-settings';
-import { embedMessage } from '../messages';
 import util from 'util';
 import dotenv from 'dotenv';
 
@@ -8,21 +7,19 @@ dotenv.config({ path: '../../.env' });
 
 const pool = mysql.createPool({
     connectionLimit: 20,
-    host: process.env.HOST!,       // non-null assertions
+    host: process.env.HOST!, // Non null assertion
     user: process.env.USER!,
     password: process.env.PSWD!,
     database: process.env.DB!
 });
 
-// Type the promisified query function
+// Type the promisified function so that it returns a Promise<any>
 const query: (sql: string, values?: any[]) => Promise<any> = util.promisify(pool.query).bind(pool);
 
 export async function loadSettings(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT * FROM bot_settings WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED DATABASE FOR CURRENT USER.');
-
         if (!result[0]) {
             console.log(`Creating new user in the database.`);
             await query(
@@ -38,7 +35,6 @@ export async function loadSettings(userID: string): Promise<any[]> {
             const newUser = await query('SELECT color, showlinks, showgrades, pastgrades, apikey FROM bot_settings WHERE discord_id = ?', [userID]);
             return newUser;
         }
-
         return result;
     } catch (error: any) {
         console.error(error);
@@ -48,7 +44,7 @@ export async function loadSettings(userID: string): Promise<any[]> {
 
 export async function setColor(userID: string, color: string): Promise<void> {
     try {
-        await query(`UPDATE bot_settings SET color = ? WHERE discord_id = ?`, [color, userID]);
+        await query('UPDATE bot_settings SET color = ? WHERE discord_id = ?', [color, userID]);
         console.log('Set color of user: ' + userID);
     } catch (error: any) {
         console.error(error);
@@ -58,7 +54,7 @@ export async function setColor(userID: string, color: string): Promise<void> {
 
 export async function setHistory(userID: string, n: number): Promise<void> {
     try {
-        await query(`UPDATE bot_settings SET pastgrades = ? WHERE discord_id = ?`, [n, userID]);
+        await query('UPDATE bot_settings SET pastgrades = ? WHERE discord_id = ?', [n, userID]);
         console.log('Set grade history of user: ' + userID);
     } catch (error: any) {
         console.error(error);
@@ -68,7 +64,7 @@ export async function setHistory(userID: string, n: number): Promise<void> {
 
 export async function addKey(userID: string, key: string): Promise<void> {
     try {
-        await query(`UPDATE bot_settings SET apikey = ? WHERE discord_id = ?`, [key, userID]);
+        await query('UPDATE bot_settings SET apikey = ? WHERE discord_id = ?', [key, userID]);
         console.log('Added API key for user: ' + userID);
     } catch (error: any) {
         console.error(error);
@@ -78,7 +74,7 @@ export async function addKey(userID: string, key: string): Promise<void> {
 
 export async function linkVisibility(userID: string, v: string): Promise<void> {
     try {
-        await query(`UPDATE bot_settings SET showlinks = ? WHERE discord_id = ?`, [v, userID]);
+        await query('UPDATE bot_settings SET showlinks = ? WHERE discord_id = ?', [v, userID]);
         console.log('Updated Link Visibility for user: ' + userID);
     } catch (error: any) {
         console.error(error);
@@ -88,7 +84,7 @@ export async function linkVisibility(userID: string, v: string): Promise<void> {
 
 export async function gradeVisibility(userID: string, v: string): Promise<void> {
     try {
-        await query(`UPDATE bot_settings SET showgrades = ? WHERE discord_id = ?`, [v, userID]);
+        await query('UPDATE bot_settings SET showgrades = ? WHERE discord_id = ?', [v, userID]);
         console.log('Updated Grade Visibility for user: ' + userID);
     } catch (error: any) {
         console.error(error);
@@ -99,7 +95,6 @@ export async function gradeVisibility(userID: string, v: string): Promise<void> 
 export async function loadGrades(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT course_name, course_letter_grade, course_score FROM api WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED API DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;
@@ -112,7 +107,6 @@ export async function loadGrades(userID: string): Promise<any[]> {
 export async function loadUpcoming(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT course_name, course_code, upcoming_assignments FROM api WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED API DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;
@@ -125,7 +119,6 @@ export async function loadUpcoming(userID: string): Promise<any[]> {
 export async function showLink(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT showlinks FROM bot_settings WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED BOT_SETTINGS DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;
@@ -138,7 +131,6 @@ export async function showLink(userID: string): Promise<any[]> {
 export async function showGrades(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT showgrades FROM bot_settings WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED BOT_SETTINGS DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;
@@ -151,7 +143,6 @@ export async function showGrades(userID: string): Promise<any[]> {
 export async function showGradeHistory(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT showgrades, pastgrades, showlinks FROM bot_settings WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED BOT_SETTINGS DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;
@@ -164,7 +155,6 @@ export async function showGradeHistory(userID: string): Promise<any[]> {
 export async function pastAssignments(userID: string): Promise<any[]> {
     try {
         const result = await query('SELECT course_name, course_code, past_assignments FROM api WHERE discord_id = ?', [userID]);
-
         console.log('SEARCHED BOT_SETTINGS DATABASE FOR CURRENT USER.');
         if (!result[0]) return [];
         return result;
@@ -176,7 +166,7 @@ export async function pastAssignments(userID: string): Promise<any[]> {
 
 export async function dndToggle(userID: string, status: string): Promise<void> {
     try {
-        await query(`UPDATE bot_settings SET dnd = ? WHERE discord_id = ?`, [status, userID]);
+        await query('UPDATE bot_settings SET dnd = ? WHERE discord_id = ?', [status, userID]);
         console.log('Set DND status of user: ' + userID);
     } catch (error: any) {
         console.error(error);
