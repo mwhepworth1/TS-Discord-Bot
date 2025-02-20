@@ -1,3 +1,7 @@
+
+// Running this file in PS:
+// " clear && npx tsc && node dist/index.js "
+
 import { Client, Collection, EmbedBuilder, GatewayIntentBits, Partials } from 'discord.js';
 import config from './data/settings.json';
 import { loadSettings, query } from './data/db/mysql';
@@ -46,7 +50,6 @@ async function startCanvasAPITask() {
 
     setTimeout(async () => {
         try {
-            // Get all users with API keys from database
             const users = await query('SELECT * FROM bot_settings WHERE apikey != "NONE"');
             
             for (const user of users) {
@@ -55,9 +58,7 @@ async function startCanvasAPITask() {
                 const api = "https://byui.instructure.com/api/v1/";
                 const token = user.apikey;
 
-                // Log courses API access
                 console.log(`[API] /v1/courses accessed on behalf of ${user.discord_id}`);
-                // Get courses
                 const coursesResponse = await axios.get(`${api}courses`, {
                     params: {
                         access_token: token,
@@ -66,18 +67,14 @@ async function startCanvasAPITask() {
                     }
                 });
 
-                // Process each course
                 for (const course of coursesResponse.data) {
                     if (!course.name || !course.course_code) continue;
-                    //if (course.term.name != "Winter 2025") continue;
                     if (course.enrollment_term_id != "411") {
                         console.log(`[API] Skipping course ${course.course_code} as it is not Winter 2025 (TERM: ${course.term.name})`);
                         continue;
                     };
 
-                    // Log upcoming assignments API access
                     console.log(`[API] Upcoming assignments for ${course.course_code} accessed on behalf of ${user.discord_id}`);
-                    // Get upcoming assignments
                     const upcomingResponse = await axios.get(`${api}courses/${course.id}/assignments`, {
                         params: {
                             include: ['submission'],
@@ -87,9 +84,7 @@ async function startCanvasAPITask() {
                         }
                     });
 
-                    // Log past assignments API access
                     console.log(`[API] Past assignments for ${course.course_code} accessed on behalf of ${user.discord_id}`);
-                    // Get past assignments
                     const pastResponse = await axios.get(`${api}courses/${course.id}/assignments`, {
                         params: {
                             include: ['submission', 'score_statistics'],
@@ -117,7 +112,6 @@ async function startCanvasAPITask() {
                         })
                         .join('\n');
 
-                    // Update database
                     await query(
                         `INSERT INTO api (course_name, course_code, course_score, course_letter_grade, upcoming_assignments, past_assignments, discord_id)
                          SELECT ?, ?, ?, ?, ?, ?, ?
@@ -156,7 +150,7 @@ async function startCanvasAPITask() {
             console.error('Error in Canvas API task:', error);
         }
         console.log('[API] Canvas API task completed.');
-    }, 1000 * 60 * 10); // Run every 10 mins = 1000 * 60 * 10
+    }, 1000 * 5); // Run every 10 mins = 1000 * 60 * 10
 }
 
 client.on('ready', () => {
@@ -171,7 +165,6 @@ client.on('ready', () => {
 
 const commands = new Collection<string, Command>();
 
-// Load commands
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
