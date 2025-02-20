@@ -61,18 +61,22 @@ async function startCanvasAPITask() {
                 const coursesResponse = await axios.get(`${api}courses`, {
                     params: {
                         access_token: token,
-                        include: 'total_scores',
-                        per_page: 100,
-                        enrollment_term_id: 411
+                        include: ['total_scores', 'term'],
+                        per_page: "100",
                     }
                 });
 
                 // Process each course
                 for (const course of coursesResponse.data) {
-                    if (!course.name || course.grading_standard_id === null) continue;
+                    if (!course.name || !course.course_code) continue;
+                    //if (course.term.name != "Winter 2025") continue;
+                    if (course.enrollment_term_id != "411") {
+                        console.log(`[API] Skipping course ${course.course_code} as it is not Winter 2025 (TERM: ${course.term.name})`);
+                        continue;
+                    };
 
                     // Log upcoming assignments API access
-                    console.log(`[API] /v1/courses/${course.id}/assignments (upcoming) accessed on behalf of ${user.discord_id}`);
+                    console.log(`[API] Upcoming assignments for ${course.course_code} accessed on behalf of ${user.discord_id}`);
                     // Get upcoming assignments
                     const upcomingResponse = await axios.get(`${api}courses/${course.id}/assignments`, {
                         params: {
@@ -84,7 +88,7 @@ async function startCanvasAPITask() {
                     });
 
                     // Log past assignments API access
-                    console.log(`[API] /v1/courses/${course.id}/assignments (past) accessed on behalf of ${user.discord_id}`);
+                    console.log(`[API] Past assignments for ${course.course_code} accessed on behalf of ${user.discord_id}`);
                     // Get past assignments
                     const pastResponse = await axios.get(`${api}courses/${course.id}/assignments`, {
                         params: {
@@ -151,7 +155,8 @@ async function startCanvasAPITask() {
         } catch (error) {
             console.error('Error in Canvas API task:', error);
         }
-    }, 1000 * 60 * 10); // Run every 10 mins
+        console.log('[API] Canvas API task completed.');
+    }, 1000); // Run every 10 mins = 1000 * 60 * 10
 }
 
 client.on('ready', () => {
@@ -176,20 +181,15 @@ for (const file of commandFiles) {
 }
 
 client.on('messageCreate', async message => {
-    console.log(`Message received: ${message.content}`);
     if (!message.content.startsWith(config.prefix)) return;
-    console.log(`Message starts with prefix: ${config.prefix}`);
     if (message.author.bot) return;
-    console.log(`Message author is not a bot`);
 
     const args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/);
     const commandName: string = args[0];
 
-    console.log(`Command name: ${commandName}`);
 
     const command = commands.get(commandName);
     if (!command) {
-        console.log(`Command not found: ${commandName}`);
         return
     };
 
