@@ -156,7 +156,7 @@ async function startCanvasAPITask() {
             console.error('Error in Canvas API task:', error);
         }
         console.log('[API] Canvas API task completed.');
-    }, 1000); // Run every 10 mins = 1000 * 60 * 10
+    }, 1000 * 60 * 10); // Run every 10 mins = 1000 * 60 * 10
 }
 
 client.on('ready', () => {

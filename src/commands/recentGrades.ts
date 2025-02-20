@@ -91,7 +91,6 @@ export const command: Command = {
                         }
                     }
 
-                    console.log(r[0]);
                     embed.title = 'Canvas LMS | Recently Graded Assignments';
                     embed.description = `A list of grades received in the last \`${null}\` days.`;
                     embed.fields = fieldArr;
