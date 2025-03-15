@@ -71,6 +71,7 @@ export async function addKey(userID: string, key: string): Promise<void> {
     try {
         await query('UPDATE bot_settings SET apikey = ? WHERE discord_id = ?', [key, userID]);
         console.log('Added API key for user: ' + userID);
+        
     } catch (error: any) {
         console.error(error);
         throw error;

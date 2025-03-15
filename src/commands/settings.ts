@@ -3,6 +3,7 @@ import { Command } from '../types/interfaces';
 import { Settings } from '../data/user-settings';
 import { EmbedMessages, embedMessage } from '../data/messages';
 import { addKey, setColor, linkVisibility, gradeVisibility, setHistory, loadSettings } from '../data/db/mysql';
+import { triggerUserDataRefresh } from '../data/canvas-api/scheduler';
 
 export const command: Command = {
     name: 'settings',
@@ -11,13 +12,25 @@ export const command: Command = {
         const dm = message.channel as DMChannel;
 
         if (args[1] === "set" && args[2] === "key" && args[3]) {
-            addKey(message.author.id, args[3]).then(r => {
+            // First update the API key in the database
+            await addKey(message.author.id, args[3]);
+            
+            // Then trigger data refresh for this user
+            try {
+                await triggerUserDataRefresh(message.author.id);
+                
+                // Send confirmation message
                 const embed = embedMessage?.settings.setKey;
                 if (embed) {
                     embed.color = color;
                     dm.send({ embeds: [embed] });
                 }
-            });
+            } catch (error) {
+                console.error(`Error refreshing Canvas data for user ${message.author.id}:`, error);
+                
+                // Send error message
+                dm.send("Your API key has been saved, but there was an issue fetching your Canvas data. Please try again later or contact support.");
+            }
         } else if (args[1] === "set" && args[2] === "color" && args[3]) {
             setColor(message.author.id, args[3]).then(r => {
                 const embed = embedMessage?.settings.setColor;
