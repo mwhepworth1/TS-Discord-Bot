@@ -29,7 +29,7 @@ export const command: Command = {
                 console.error(`Error refreshing Canvas data for user ${message.author.id}:`, error);
                 
                 // Send error message
-                dm.send("Your API key has been saved, but there was an issue fetching your Canvas data. Please try again later or contact support.");
+                dm.send("Your API key has been saved, but there was an issue fetching your Canvas data. Please try again later or reach out for support.");
             }
         } else if (args[1] === "set" && args[2] === "color" && args[3]) {
             setColor(message.author.id, args[3]).then(r => {
