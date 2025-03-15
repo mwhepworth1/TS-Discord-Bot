@@ -32,7 +32,9 @@ To recreate the development environment, you need the following software and/or 
 * "dotenv": "^16.4.7",
 * "mysql": "2.18.1",
 * "ts-node": "^10.9.2",
-* "typescript": "^5.7.3"
+* "typescript": "^5.7.3",
+* "node-cron": "^3.0.3",
+* "@types/node-cron": "^3.0.11"
 
 ## Useful Websites to Learn More
 
@@ -40,12 +42,12 @@ I found these websites useful in developing this software:
 
 * [DiscordJS](https://discord.js.org)
 * [GitHub Copilot](https://github.com/copilot)
-*
+* 
 
 ## Future Work
 
 The following items I plan to fix, improve, and/or add to this project in the future:
 
-* [ ] Add scheduled tasks including routinely updating student data on demand and at intervals
+* [x] Add scheduled tasks including routinely updating student data on demand and at intervals
 * [ ] Add Database encryption for sensitive Canvas API keys
 * [ ] Share & include disclaimers for FERPA laws.
