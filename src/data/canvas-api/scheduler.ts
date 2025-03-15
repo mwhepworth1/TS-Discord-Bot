@@ -7,12 +7,18 @@ import { fetchCanvasDataForUser, fetchCanvasDataForAllUsers } from './processor.
  * By default, it refreshes data daily at 1:00 AM
  */
 export function initializeScheduler(): void {
-  // Schedule job to run at 1:00 AM every day
-  const dailyRefreshJob = cron.schedule('0 1 * * *', async () => {
+  // Schedule job to run at 3:30 PM every day
+  // For 30 minute intervals, use '*/30 * * * *'
+  // For every hour, use '0 * * * *'
+  
+  const dailyRefreshJob = cron.schedule('30 15 * * *', async () => { 
     console.log('[CRON] Starting scheduled Canvas API data refresh');
     await fetchCanvasDataForAllUsers();
     console.log('[CRON] Completed scheduled Canvas API data refresh');
   });
+
+  // Start the job
+  dailyRefreshJob.start();
 
   console.log('[CRON] Canvas API scheduler initialized');
 }
