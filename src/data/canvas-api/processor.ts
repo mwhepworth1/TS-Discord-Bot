@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { query } from '../db/mysql';
+import { query, getApiKey, encrypt, decrypt } from '../db/mysql';
 
 // Interface definitions for Canvas API data
 interface Assignment {
@@ -47,14 +47,15 @@ export async function fetchCanvasDataForUser(userId: string): Promise<void> {
   console.log(`[API] Processing Canvas data for user ${userId}`);
   
   try {
-    const userData = await query('SELECT apikey FROM bot_settings WHERE discord_id = ?', [userId]);
-    
-    if (!userData.length || !userData[0].apikey || userData[0].apikey === 'NONE') {
-      console.log(`[API] User ${userId} has no API key, skipping`);
+    // Get and decrypt the API key
+    const apiKey = await getApiKey(userId);
+    if (!apiKey) {
+      console.log(`No API key available for user ${userId}`);
       return;
     }
     
-    const token = userData[0].apikey;
+    // Use the decrypted API key for Canvas API calls
+    const token = apiKey;
     
     await query('DELETE FROM api WHERE discord_id = ?', [userId]);
     console.log(`[API] Deleted existing Canvas data for user ${userId}`);
@@ -112,19 +113,7 @@ export async function fetchCanvasDataForUser(userId: string): Promise<void> {
         })
         .join('\n');
       
-      await query(
-        `INSERT INTO api (course_name, course_code, course_score, course_letter_grade, upcoming_assignments, past_assignments, discord_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [
-          course.name,
-          course.course_code,
-          course.enrollments[0].computed_current_score,
-          course.enrollments[0].computed_current_grade,
-          upcomingAssignments,
-          pastAssignments,
-          userId
-        ]
-      );
+      await storeCanvasData(userId, course, upcomingAssignments, pastAssignments);
       
       console.log(`[API] Saved data for course ${course.course_code} for user ${userId}`);
     }
@@ -133,4 +122,35 @@ export async function fetchCanvasDataForUser(userId: string): Promise<void> {
   } catch (error) {
     console.error(`[API] Error processing Canvas data for user ${userId}:`, error);
   }
+}
+
+// This would go in your processor.ts file or wherever you insert data into the API table
+async function storeCanvasData(user: any, course: any, upcomingAssignments: string, pastAssignments: string): Promise<void> {
+    try {
+        // Encrypt sensitive data
+        const encryptedUpcoming = encrypt(upcomingAssignments);
+        const encryptedPast = encrypt(pastAssignments);
+        
+        await query(
+            `INSERT INTO api (course_name, course_code, course_score, course_letter_grade, upcoming_assignments, past_assignments, discord_id) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)
+             ON DUPLICATE KEY UPDATE 
+             course_score = VALUES(course_score), 
+             course_letter_grade = VALUES(course_letter_grade), 
+             upcoming_assignments = VALUES(upcoming_assignments), 
+             past_assignments = VALUES(past_assignments)`,
+            [
+                course.name,
+                course.course_code,
+                course.enrollments[0].computed_current_score,
+                course.enrollments[0].computed_current_grade,
+                encryptedUpcoming,
+                encryptedPast,
+                user
+            ]
+        );
+    } catch (error) {
+        console.error('Error storing encrypted Canvas data:', error);
+        throw error;
+    }
 }

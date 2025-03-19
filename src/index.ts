@@ -10,6 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
 import { initializeScheduler, triggerAllUsersDataRefresh } from './data/canvas-api/scheduler';
+import crypto from 'crypto';
 
 let embedMessage: EmbedMessages | undefined; // Use "| undefined" to allow for the possibility of it being undefined
 
