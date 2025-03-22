@@ -84,28 +84,6 @@ export function decrypt(encryptedText: string): string {
     return decrypted.toString('utf8');
 }
 
-/**
- * Encrypts an object or array by converting to JSON and encrypting
- * @param data - The data to encrypt
- * @returns Encrypted string
- */
-function encryptData(data: any): string {
-    return encrypt(JSON.stringify(data));
-}
-
-/**
- * Decrypts and parses a JSON string
- * @param encryptedData - The encrypted data
- * @returns Decrypted and parsed data
- */
-function decryptData(encryptedData: string): any {
-    try {
-        return JSON.parse(decrypt(encryptedData));
-    } catch (error) {
-        console.error('Error decrypting or parsing data:', error);
-        return null;
-    }
-}
 
 // Type the promisified function so that it returns a Promise<any>
 export const query: (sql: string, values?: any[]) => Promise<any> = util.promisify(pool.query).bind(pool);

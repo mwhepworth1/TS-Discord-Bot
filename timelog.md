@@ -43,6 +43,15 @@ The expected minimum amount of time each Sprint for each category is as follows:
 |   3/10    |  5:00p   |   IM   | Cloned from my repo and reset my files to start over |     340     |
 |   3/15    |  11:00a  |   IM   | Finished my cron-scheduling |     340     |
 
+## Time Log 3rd Part:
+|   3/11   |  12:45p  | MTG/TP | Get on same page again.              |     90      |
+|   3/13   |  12:45p  | MTG/TP | Again, tried to get on same page, people weren't present.   |     90      |
+|   3/18   |  12:45p  | MTG/TP | Got CSS styling updated   |     90      |
+|   3/20   |  12:45p  | MTG/TP | Worked on a ton more CSS styling and started beautifying (ish) app.   |     90      |
+|   3/15   |  8:00a   |   IM   | Implemented bcrypt to hash API key. |     280     |
+|   3/20    |  5:00p   |   IM   | Learned not to use bcrypt and studied difference between encryption and hashing in a sandbox |     340     |
+|   3/22    |  11:00a  |   IM   | Implemented AES 256 GCM encryption for API keys throughout whole app. |     340     |
+
 _Note: Add more rows as needed._
 
 ## Sprint Totals
@@ -54,7 +63,15 @@ _Note: Add more rows as needed._
 |MTG - Class Meetings           |             4:30             |
 |**TOTAL**                      |             24:00            |
 
-## 2nd Part of Sprint:
+## 2nd Sprint:
+|Categroy                       |Total Time (Hours:Minutes)|
+|-------------------------------|:------------------------:|
+|IM - Individual Module         |             15:00            |
+|TP - Team Project              |             6:00             |
+|MTG - Class Meetings           |             6:00             |
+|**TOTAL**                      |             21:00            |
+
+## 3rd Sprint:
 |Categroy                       |Total Time (Hours:Minutes)|
 |-------------------------------|:------------------------:|
 |IM - Individual Module         |             15:00            |
